@@ -1,0 +1,40 @@
+use crate::ast::{
+  Chunk as AstChunk,
+  Identifier as AstIdentifier, 
+  Number as AstNumber
+};
+
+grammar;
+
+pub Chunk: AstChunk = {
+  IdentifierList => {
+    let mut chunk = AstChunk::new();
+    chunk.identifiers = <>;
+    chunk
+  },
+};
+
+IdentifierList: Vec<AstIdentifier> = {
+  <mut list: IdentifierList> Comma <ident: Identifier> => {
+    list.push(ident);
+    list
+  },
+
+  <ident: Identifier> => {
+    let mut list = Vec::new();
+    list.push(ident);
+    list
+  },
+};
+
+Identifier: AstIdentifier = {
+  r"[a-zA-Z_]+[0-9]*" => AstIdentifier::from(<>),
+};
+
+Number: AstNumber = {
+  r"[-+]?([0-9]*\.[0-9]+|[0-9]+)" => AstNumber::try_from(<>).unwrap(),
+};
+
+Comma: () = {
+  ","
+};

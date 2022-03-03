@@ -1,0 +1,6 @@
+[package]
+name = "lpp-macros"
+description = "Internal procedural macros used for ease-of-development."
+version = "0.0.0"
+authors = ["jackk <jack@wings.cx>"]
+edition = "2021"
