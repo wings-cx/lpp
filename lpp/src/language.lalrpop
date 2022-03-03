@@ -1,17 +1,82 @@
 use crate::ast::{
   Chunk as AstChunk,
+  Statement as AstStatement,
+  LocalAssignStatement as AstLocalAssignStatement,
+  Expression as AstExpression,
   Identifier as AstIdentifier, 
   Number as AstNumber
 };
 
 grammar;
 
+extern {
+  type Error = Box<dyn std::error::Error>;
+}
+
+/// Creates a list separated by S.
+List<T, S>: Vec<T> = {
+  <mut v:(<T> <S>)*> <e: T?> => match e {
+    None => v,
+    Some(e) => {
+      v.push(e);
+      v
+    }
+  }
+};
+
+/// Top-level chunk: contains zero or more `Identifier`'s.
+/// Contains optional `Return` statement.
 pub Chunk: AstChunk = {
-  IdentifierList => {
-    let mut chunk = AstChunk::new();
-    chunk.identifiers = <>;
+  StatementList => {
+    let chunk = AstChunk::new(<>, None);
     chunk
   },
+};
+
+StatementList: Vec<AstStatement> = {
+  <mut list: StatementList> <statement: Statement> => {
+    list.push(statement);
+    list
+  },
+
+  <statement: Statement> => {
+    let mut list = Vec::new();
+    list.push(statement);
+    list
+  },
+};
+
+Statement: AstStatement = {
+  LocalAssignStatement => <>, 
+};
+
+LocalAssignStatement: AstStatement = {
+  "local" <identifier_list: IdentifierList> "=" <expression_list: ExpressionList> =>? {
+    let mut las = AstLocalAssignStatement::new(identifier_list, expression_list)?;
+    Ok(AstStatement::LocalAssign(las))
+  },
+};
+
+ExpressionList: Vec<AstExpression> = {
+  <mut list: ExpressionList> Comma <expression: Expression> => {
+    list.push(expression);
+    list
+  },
+
+  <expression: Expression> => {
+    let mut list = Vec::new();
+    list.push(expression);
+    list
+  },
+};
+
+Expression: AstExpression = {
+  Term => <>,
+};
+
+Term: AstExpression = {
+  Identifier => AstExpression::Identifier(<>),
+  Number => AstExpression::Number(<>),
 };
 
 IdentifierList: Vec<AstIdentifier> = {

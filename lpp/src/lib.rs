@@ -1,4 +1,5 @@
 mod ast;
+mod error;
 
 use lalrpop_util::lalrpop_mod;
 

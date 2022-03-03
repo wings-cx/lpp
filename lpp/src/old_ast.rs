@@ -1,21 +1,46 @@
 //! The Lua++ abstract syntax tree.
 
-use std::{str::FromStr, error::Error, fmt::Display};
+use std::{error::Error, str::FromStr};
 
 type AstResult<T> = Result<T, Box<dyn Error>>;
 
 /// Top-level node encompassing the entire program.
 #[derive(Debug)]
 pub struct Chunk {
-    pub identifiers: Vec<Identifier>,
+    pub statements: Vec<Statement>,
 }
 
 impl Chunk {
-    pub fn new() -> Self {
+    /// Returns an empty [`Chunk`].
+    pub fn new(statements: Vec<Statement>) -> Self {
         Self {
-            identifiers: Vec::new(),
+            statements,
         }
     }
+}
+
+#[derive(Debug)]
+pub enum Statement {
+    LocalAssign(LocalAssignStatement),
+}
+
+#[derive(Debug)]
+pub struct LocalAssignStatement {
+    assignments: Vec<(Identifier, Expression)>,
+}
+
+impl LocalAssignStatement {
+    pub fn new(identifiers: Vec<Identifier>, values: Vec<Box<Expression>>) -> AstResult<Self> {
+        Ok(Self {
+            assignments:
+        })
+    }
+}
+
+#[derive(Debug)]
+pub enum Expression {
+    Number(Number),
+    Identifier(Identifier),
 }
 
 /// Stores an identifier within a [`String`].
@@ -43,6 +68,7 @@ macro_rules! identifier_vec {
 }
 
 /// Stores a floating-point number within an [`f64`].
+#[derive(Debug)]
 pub struct Number {
     pub value: f64,
 }
@@ -66,9 +92,7 @@ mod tests {
     #[test]
     fn test_parse() -> TestResult {
         let parser = ChunkParser::new();
-
-        let result = parser.parse("ident1, ident2, _ident3, __ident_4")?;
-        assert_eq!(result.identifiers, identifier_vec!["ident1", "ident2", "_ident3", "__ident_4"]);
+        println!("{:?}", parser.parse("a = 10"));
 
         Ok(())
     }
