@@ -1,0 +1,34 @@
+======================
+Variable Related Tests
+======================
+
+a.b.c = 1
+
+a[10].b[ident].c = 2
+
+---
+
+(chunk
+  (assign_statement
+    variables: (variable_list
+      (variable_dot_index
+        variable: (variable_dot_index
+          variable: (identifier)
+          identifier: (identifier))
+        identifier: (identifier)))
+    expressions: (expression_list
+      (number)))
+  
+  (assign_statement
+    variables: (variable_list
+      (variable_dot_index
+        variable: (variable_sub_index
+          variable: (variable_dot_index
+            variable: (variable_sub_index
+              variable: (identifier)
+              expression: (number))
+            identifier: (identifier))
+          expression: (identifier))
+        identifier: (identifier)))
+    expressions: (expression_list
+      (number))))

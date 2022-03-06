@@ -7,13 +7,14 @@ module.exports = grammar({
   rules: {
     chunk: $ =>
       seq(
-        repeat(alias($.statement, $._statement)), 
+        repeat($._statement),
         optional($.return_statement)
       ),
 
-    statement: $ =>
+    _statement: $ =>
       choice(
         $.local_assign_statement,
+        $.assign_statement,
       ),
 
     return_statement: $ => 
@@ -22,31 +23,47 @@ module.exports = grammar({
     local_assign_statement: $ =>
       seq(
         "local", 
-        $.identifier_list,
+        field("identifiers", $.identifier_list),
         optional(seq(
           "=",
-          $.expression_list,
-        ))
+          field("expressions", $.expression_list),
+        )),
       ),
 
-    expression_list: $ => delim_rule($.expression, ","),
+    assign_statement: $ =>
+      seq(
+        field("variables", $.variable_list),
+        "=",
+        field("expressions", $.expression_list),
+      ),
+
+    expression_list: $ => 
+      delim_rule($._expression, ","),
     
-    expression: $ => 
+    _expression: $ => 
       choice(
         $._variable,
         $.number,
       ),
 
+    variable_list: $ => 
+      delim_rule($._variable, ","),
+
     _variable: $ =>
       choice(
         $.variable_dot_index,
+        $.variable_sub_index,
         $.identifier,
       ),
 
     variable_dot_index: $ =>
-      seq(field("left", $._variable), ".", field("right", $.identifier)),
+      seq(field("variable", $._variable), ".", field("identifier", $.identifier)),
 
-    identifier_list: $ => delim_rule($.identifier, ","),
+    variable_sub_index: $ =>
+      seq(field("variable", $._variable), "[", field("expression", $._expression), "]"),
+
+    identifier_list: $ => 
+      delim_rule($.identifier, ","),
 
     identifier: $ => /[a-zA-Z]+/,
 
