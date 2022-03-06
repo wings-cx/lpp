@@ -1,14 +1,6 @@
 [package]
 name = "lpp"
-description = "The Lua programming language with powerful procedural macros."
+description = "Implements the Lua++ transpiler."
 version = "0.0.0"
 authors = ["jackk <jack@wings.cx>"]
 edition = "2021"
-build = "build.rs"
-
-[build-dependencies]
-lalrpop = "0.19.7"
-
-[dependencies]
-lalrpop-util = "0.19.7"
-regex = "1"

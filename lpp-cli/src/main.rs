@@ -1,5 +1,13 @@
-use std::error::Error;
+use clap::Parser;
 
-fn main() -> Result<(), Box<dyn Error>> {
-    Ok(())
+#[derive(Parser, Debug)]
+#[clap(author, version, about, long_about = None)]
+struct Args {
+    #[clap(short, long)]
+    verbose: bool,
+}
+
+fn main() {
+    let args = Args::parse();
+    println!("{:?}", args);
 }

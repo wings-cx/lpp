@@ -1,9 +1,9 @@
 [package]
 name = "lpp-cli"
-description = "Command-line tool for lpp."
+description = "A command-line tool for Lua++."
 version = "0.0.0"
 authors = ["jackk <jack@wings.cx>"]
 edition = "2021"
 
 [dependencies]
-lpp = { path = "../lpp" }
+clap = { version = "3.1.5", features = ["derive"] }

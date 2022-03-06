@@ -1,0 +1,9 @@
+{
+  "name": "lpp-grammar",
+  "version": "1.0.0",
+  "main": "bindings/node",
+  "license": "MIT",
+  "devDependencies": {
+    "tree-sitter-cli": "^0.20.6"
+  }
+}
