@@ -2,7 +2,7 @@
 Variable Related Tests
 ======================
 
-a.b.c = 1
+a.b.c = 0x1
 
 a[10].b[ident].c = 2
 
