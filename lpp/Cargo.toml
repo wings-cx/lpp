@@ -4,3 +4,9 @@ description = "Implements the Lua++ transpiler."
 version = "0.0.0"
 authors = ["jackk <jack@wings.cx>"]
 edition = "2021"
+
+[dependencies]
+ansi_term = "0.12"
+typed-builder = "0.10.0"
+tree-sitter = "0.20.6"
+tree-sitter-lpp = { path = "../lpp-parser" }

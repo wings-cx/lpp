@@ -1,13 +1,36 @@
-use clap::Parser;
+mod commands;
 
-#[derive(Parser, Debug)]
+use crate::commands::GenerateCst;
+
+use lpp::Failable;
+
+use clap::{Parser, Subcommand};
+
+#[derive(Parser)]
 #[clap(author, version, about, long_about = None)]
-struct Args {
-    #[clap(short, long)]
-    verbose: bool,
+struct Cli {
+    #[clap(short, long, parse(from_occurrences))]
+    verbosity: usize,
+
+    #[clap(subcommand)]
+    command: Option<Command>,
 }
 
-fn main() {
-    let args = Args::parse();
-    println!("{:?}", args);
+#[derive(Subcommand)]
+enum Command {
+    GenerateCst(GenerateCst),
+}
+
+fn main() -> Failable<()> {
+    let cli = Cli::parse();
+
+    if let Some(command) = cli.command {
+        match command {
+            Command::GenerateCst(args) => {
+                commands::generate_cst(args)?;
+            },
+        }
+    }
+
+    Ok(())
 }

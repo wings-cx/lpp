@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "3.1.5", features = ["derive"] }
+lpp = { path = "../lpp" }
+tree-sitter = "0.20.6"
+tree-sitter-lpp = { path = "../lpp-parser" }

@@ -1,0 +1,17 @@
+=============
+Function Name
+=============
+
+function a.b.c()
+end
+
+---
+
+(chunk
+  (function_declaration_statement
+    name: (function_name_dot_index
+      variable: (function_name_dot_index
+        variable: (identifier)
+        identifier: (identifier))
+      identifier: (identifier))
+    body: (terminated_chunk)))

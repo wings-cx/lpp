@@ -1,0 +1,58 @@
+=====================
+Local Variable Assign
+=====================
+
+local a, b, c = 1, 2, 3
+
+---
+
+(chunk 
+  (local_assign_statement
+    identifiers: (identifier_list
+      (identifier)
+      (identifier)
+      (identifier))
+    expressions: (expression_list
+      (number)
+      (number)
+      (number))))
+
+==================
+Variable Dot Index
+==================
+
+a.b.c = 0x1
+
+---
+
+(chunk
+  (assign_statement
+    variables: (variable_list
+      (variable_dot_index
+        variable: (variable_dot_index
+          variable: (identifier)
+          identifier: (identifier))
+        identifier: (identifier)))
+    expressions: (expression_list
+      (number))))
+
+==================
+Variable Sub Index
+==================
+
+a[1][2][3] = 4
+
+---
+
+(chunk
+  (assign_statement
+    variables: (variable_list
+      (variable_sub_index
+        variable: (variable_sub_index
+          variable: (variable_sub_index
+            variable: (identifier)
+            expression: (number))
+          expression: (number))
+        expression: (number)))
+    expressions: (expression_list
+      (number))))

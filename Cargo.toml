@@ -1,2 +1,2 @@
 [workspace]
-members = ["lpp", "lpp-cli"]
+members = ["lpp", "lpp-cli", "lpp-parser"]

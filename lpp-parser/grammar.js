@@ -1,3 +1,18 @@
+const PRECEDENCE = {
+  OR: 10,
+  AND: 11,
+  COMPARE: 12,
+  BIT_OR: 13,
+  BIT_NOT: 14,
+  BIT_AND: 15,
+  SHIFT: 16,
+  CONCAT: 17,
+  PLUS: 18,
+  MULTI: 19,
+  UNARY: 20,
+  POWER: 21,
+};
+
 const delim_rule = (rule, delim) => 
   seq(rule, repeat(seq(delim, rule)));
 
@@ -11,10 +26,18 @@ module.exports = grammar({
         optional($.return_statement)
       ),
 
+    terminated_chunk: $ =>
+      seq(
+        repeat($._statement),
+        optional($.return_statement),
+        "end"
+      ),
+
     _statement: $ =>
       choice(
         $.local_assign_statement,
         $.assign_statement,
+        $.function_declaration_statement,
       ),
 
     return_statement: $ => 
@@ -37,13 +60,69 @@ module.exports = grammar({
         field("expressions", $.expression_list),
       ),
 
+    function_declaration_statement: $ => 
+      seq(
+        "function",
+        field("name", $._function_name),
+        "()",
+        field("body", $.terminated_chunk),
+      ),
+
+    _function_name: $ =>
+      choice(
+        $.function_name_dot_index,
+        $.identifier,
+      ),
+
+    function_name_dot_index: $ =>
+      seq(
+        field("variable", $._function_name),
+        ".", 
+        field("identifier", $.identifier), 
+        optional($.function_name_self_index),
+      ),
+
+    function_name_self_index: $ =>
+      seq(
+        ":",
+        field("identifier", $.identifier)
+      ),
+
     expression_list: $ => 
       delim_rule($._expression, ","),
     
     _expression: $ => 
       choice(
         $._variable,
+        $.binary_expression,
         $.number,
+      ),
+
+    binary_expression: $ =>
+      choice(
+        ...[
+          ["or", PRECEDENCE.OR],
+          ["and", PRECEDENCE.AND],
+          ["<", PRECEDENCE.COMPARE],
+          ["<=", PRECEDENCE.COMPARE],
+          ["==", PRECEDENCE.COMPARE],
+          ["~=", PRECEDENCE.COMPARE],
+          [">=", PRECEDENCE.COMPARE],
+          [">", PRECEDENCE.COMPARE],
+          ["+", PRECEDENCE.PLUS],
+          ["-", PRECEDENCE.PLUS],
+          ["*", PRECEDENCE.MULTI],
+          ["/", PRECEDENCE.MULTI],
+        ].map(([sym, precedence]) => 
+          prec.left(precedence, seq($._expression, sym, $._expression))
+        ),
+
+        ...[
+          ["..", PRECEDENCE.CONCAT],
+          ["^", PRECEDENCE.POWER],
+        ].map(([sym, precedence]) => 
+          prec.right(precedence, seq($._expression, sym, $._expression)),
+        ),
       ),
 
     variable_list: $ => 
