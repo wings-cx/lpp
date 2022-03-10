@@ -1,24 +1,43 @@
-use lpp::{Error, debug::{TreePrinter, TreePrinterOptions}};
+use lpp::{
+    debug::{TreePrinter, TreePrinterOptions},
+    Error,
+};
 use std::{fs::File, io::Read};
 
-use lpp::Failable;
-use tree_sitter::{Parser, Node};
 use clap::Args;
+use lpp::Failable;
+use tree_sitter::Parser;
 
 #[derive(Args)]
 pub struct GenerateCst {
     path: String,
 
-    #[clap(short = 'S', long = "sources", help = "Includes the source of each terminal or non-terminal. Sources aren't included for nodes which contain '\\n' characters.")]
+    #[clap(
+        short = 'S',
+        long = "sources",
+        help = "Includes the source of each terminal or non-terminal. Sources aren't included for nodes which contain '\\n' characters."
+    )]
     sources: bool,
 
-    #[clap(short = 'b', long = "byte-offsets", help = "Includes byte offsets into the original source file for each terminal or non-terminal.")]
+    #[clap(
+        short = 'b',
+        long = "byte-offsets",
+        help = "Includes byte offsets into the original source file for each terminal or non-terminal."
+    )]
     byte_offsets: bool,
 
-    #[clap(short, long, help = "Includes row-column position pairs for each terminal or non-terminal.")]
+    #[clap(
+        short,
+        long,
+        help = "Includes row-column position pairs for each terminal or non-terminal."
+    )]
     positions: bool,
 
-    #[clap(short, long, help = "Includes tree-sitter fields for terminals and non-terminals which contains contain them.")]
+    #[clap(
+        short,
+        long,
+        help = "Includes tree-sitter fields for terminals and non-terminals which contains contain them."
+    )]
     fields: bool,
 }
 

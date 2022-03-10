@@ -28,7 +28,7 @@ fn main() -> Failable<()> {
         match command {
             Command::GenerateCst(args) => {
                 commands::generate_cst(args)?;
-            },
+            }
         }
     }
 

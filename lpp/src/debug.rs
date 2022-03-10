@@ -1,8 +1,8 @@
 use std::fmt::Write;
 
-use typed_builder::TypedBuilder;
-use ansi_term::Color::{Fixed, Green, Blue, White, Red};
+use ansi_term::Color::{Blue, Fixed, Green, Red, White};
 use tree_sitter::{Node, TreeCursor};
+use typed_builder::TypedBuilder;
 
 use crate::Failable;
 
@@ -30,15 +30,12 @@ pub struct TreePrinter<'source> {
 
 impl<'source> TreePrinter<'source> {
     pub fn new(options: TreePrinterOptions<'source>) -> Self {
-        Self {
-            indent: 0,
-            options,
-        }
+        Self { indent: 0, options }
     }
 
     pub fn invoke(&mut self, node: Node) -> Failable<()> {
         self.indent = 0;
-        
+
         let mut cursor = node.walk();
         self.invoke_inner(&mut cursor)?;
 
@@ -61,11 +58,7 @@ impl<'source> TreePrinter<'source> {
                     let field_name = parent.field_name_for_child(index);
 
                     if let Some(field_name) = field_name {
-                        write!(
-                            message,
-                            "{}: ",
-                            Blue.paint(format!("'{}'", field_name)),
-                        )?;
+                        write!(message, "{}: ", Blue.paint(format!("'{}'", field_name)),)?;
                     }
                 }
 
@@ -78,10 +71,10 @@ impl<'source> TreePrinter<'source> {
                 if self.options.positions {
                     write!(
                         message,
-                        " {}", 
+                        " {}",
                         Fixed(8).paint(format!(
                             "<{}, {}>",
-                            node.start_position(), 
+                            node.start_position(),
                             node.end_position(),
                         )),
                     )?;
@@ -90,10 +83,10 @@ impl<'source> TreePrinter<'source> {
                 if self.options.byte_offsets {
                     write!(
                         message,
-                        " {}", 
+                        " {}",
                         Fixed(8).paint(format!(
                             "[{}, {}]",
-                            node.start_position(), 
+                            node.start_position(),
                             node.end_position(),
                         )),
                     )?;
@@ -103,10 +96,10 @@ impl<'source> TreePrinter<'source> {
 
                 if self.options.sources && node.parent() != None {
                     write!(
-                        message, 
-                        "{}", 
+                        message,
+                        "{}",
                         Green.paint(format!(
-                            "\"{}\"", 
+                            "\"{}\"",
                             node.utf8_text(self.options.source.as_bytes())?.trim(),
                         )),
                     )?;
@@ -125,7 +118,7 @@ impl<'source> TreePrinter<'source> {
             if !cursor.goto_next_sibling() {
                 break;
             }
-            
+
             index += 1;
         }
 

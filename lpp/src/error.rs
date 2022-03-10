@@ -10,9 +10,7 @@ pub struct Error {
 impl Error {
     /// Returns a new boxed [`Error`] with the `why` passed.
     pub fn new<S: Into<String>>(why: S) -> Box<Self> {
-        Box::new(Self {
-            why: why.into(),
-        })
+        Box::new(Self { why: why.into() })
     }
 }
 
@@ -22,8 +20,7 @@ impl Display for Error {
     }
 }
 
-impl std::error::Error for Error {
-}
+impl std::error::Error for Error {}
 
 /// Wraps a [`std::result::Result`] with a boxed [`std::error::Error`] as an error type.
 pub type Failable<T> = Result<T, Box<dyn std::error::Error>>;
