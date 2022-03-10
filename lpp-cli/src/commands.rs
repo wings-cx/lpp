@@ -9,16 +9,16 @@ use clap::Args;
 pub struct GenerateCst {
     path: String,
 
-    #[clap(short = 'S', long = "sources")]
+    #[clap(short = 'S', long = "sources", help = "Includes the source of each terminal or non-terminal. Sources aren't included for nodes which contain '\\n' characters.")]
     sources: bool,
 
-    #[clap(short = 'b', long = "byte-offsets")]
+    #[clap(short = 'b', long = "byte-offsets", help = "Includes byte offsets into the original source file for each terminal or non-terminal.")]
     byte_offsets: bool,
 
-    #[clap(short, long)]
+    #[clap(short, long, help = "Includes row-column position pairs for each terminal or non-terminal.")]
     positions: bool,
 
-    #[clap(short, long)]
+    #[clap(short, long, help = "Includes tree-sitter fields for terminals and non-terminals which contains contain them.")]
     fields: bool,
 }
 
