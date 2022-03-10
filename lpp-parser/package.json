@@ -1,8 +1,12 @@
 {
-  "name": "lpp-grammar",
+  "name": "tree-sitter-lpp",
   "version": "1.0.0",
   "main": "bindings/node",
   "license": "MIT",
+  "scripts": {
+    "parse": "tree-sitter parse",
+    "generate": "tree-sitter generate"
+  },
   "devDependencies": {
     "tree-sitter-cli": "^0.20.6"
   }

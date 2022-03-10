@@ -12,6 +12,8 @@ Cargo.lock
 node_modules
 
 # Grammar
-/lpp-grammar/bindings/
-/lpp-grammar/src/*
-!/lpp-grammar/src/external.cc
+/lpp-parser/bindings/
+/lpp-parser/src/*
+!/lpp-parser/src/external.cc
+
+example.lpp

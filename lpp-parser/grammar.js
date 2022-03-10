@@ -19,6 +19,8 @@ const delim_rule = (rule, delim) =>
 module.exports = grammar({
   name: "lpp",
 
+  word: $ => $.identifier,
+
   rules: {
     chunk: $ =>
       seq(

@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "lpp",
+  "version": "0.1.0",
+  "description": "Lua with more language features.",
+  "workspaces": [
+    "lpp-parser"
+  ],
+  "scripts": {
+    "parser": "yarn workspace tree-sitter-lpp"
+  }
+}
