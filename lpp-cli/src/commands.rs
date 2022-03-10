@@ -1,5 +1,5 @@
 use lpp::{
-    debug::{TreePrinter, TreePrinterOptions},
+    util::{TreePrinter, TreePrinterOptions},
     Error,
 };
 use std::{fs::File, io::Read};
