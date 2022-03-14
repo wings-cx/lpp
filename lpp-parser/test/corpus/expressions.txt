@@ -1,0 +1,105 @@
+=================
+Binary Operations
+=================
+
+local a = 1 + 2 * 3
+local b = a + i < b / 2 + 1
+local c = 5 + x ^ 2 * 8
+
+---
+
+(chunk
+  (local_assign_statement
+    identifiers: (identifier_list
+      (identifier))
+    expressions: (expression_list
+      (binary_expression
+        left: (number)
+        right: (binary_expression
+          left: (number)
+          right: (number)))))
+  
+  (local_assign_statement
+    identifiers: (identifier_list
+      (identifier))
+    expressions: (expression_list
+      (binary_expression
+        left: (binary_expression
+          left: (identifier)
+          right: (identifier))
+        right: (binary_expression
+          left: (binary_expression
+            left: (identifier)
+            right: (number))
+          right: (number)))))
+  
+  (local_assign_statement
+    identifiers: (identifier_list
+      (identifier))
+    expressions: (expression_list
+      (binary_expression
+        left: (number)
+        right: (binary_expression
+          left: (binary_expression
+            left: (identifier)
+            right: (number))
+          right: (number))))))
+
+=====================
+Local Variable Assign
+=====================
+
+local a, b, c = 1, 2, 3
+
+---
+
+(chunk 
+  (local_assign_statement
+    identifiers: (identifier_list
+      (identifier)
+      (identifier)
+      (identifier))
+    expressions: (expression_list
+      (number)
+      (number)
+      (number))))
+
+==================
+Variable Dot Index
+==================
+
+a.b.c = 0x1
+
+---
+
+(chunk
+  (assign_statement
+    variables: (variable_list
+      (variable_dot_index
+        variable: (variable_dot_index
+          variable: (identifier)
+          identifier: (identifier))
+        identifier: (identifier)))
+    expressions: (expression_list
+      (number))))
+
+==================
+Variable Sub Index
+==================
+
+a[1][2][3] = 4
+
+---
+
+(chunk
+  (assign_statement
+    variables: (variable_list
+      (variable_sub_index
+        variable: (variable_sub_index
+          variable: (variable_sub_index
+            variable: (identifier)
+            expression: (number))
+          expression: (number))
+        expression: (number)))
+    expressions: (expression_list
+      (number))))

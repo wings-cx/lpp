@@ -6,6 +6,7 @@ use typed_builder::TypedBuilder;
 
 use crate::Failable;
 
+/// Options used when creating a [`TreePrinter`].
 #[derive(TypedBuilder, Default)]
 pub struct TreePrinterOptions<'source> {
     source: &'source str,
@@ -23,16 +24,19 @@ pub struct TreePrinterOptions<'source> {
     fields: bool,
 }
 
+/// Used to print the contents of a [`tree_sitter::Tree`] with different formatting options.
 pub struct TreePrinter<'source> {
     indent: usize,
     options: TreePrinterOptions<'source>,
 }
 
 impl<'source> TreePrinter<'source> {
+    /// Returns a [`TreePrinter`] with the [`TreePrinterOptions`] passed.
     pub fn new(options: TreePrinterOptions<'source>) -> Self {
         Self { indent: 0, options }
     }
 
+    /// Prints the [`tree_sitter::Node`] passed. Indentation is reset everytime this is called.
     pub fn invoke(&mut self, node: Node) -> Failable<()> {
         self.indent = 0;
 
@@ -124,4 +128,10 @@ impl<'source> TreePrinter<'source> {
 
         Ok(())
     }
+}
+
+pub fn compare_tree(expected: Node, actual: Node) -> bool {
+
+
+    true
 }

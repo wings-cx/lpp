@@ -8,6 +8,7 @@ use clap::Args;
 use lpp::Failable;
 use tree_sitter::Parser;
 
+/// Contains the arguments required for [`generate_cst`].
 #[derive(Args)]
 pub struct GenerateCst {
     path: String,
@@ -69,4 +70,26 @@ pub fn generate_cst(args: GenerateCst) -> Failable<()> {
     printer.invoke(tree.root_node())?;
 
     Ok(())
+}
+
+/// Contains the arguments for [`test_cst`].
+#[derive(Args)]
+pub struct TestCst {
+    
+}
+
+/// Runs tree-sitter-style tests, but with a more fancy output.
+/// Files should be formatted like the following,
+///
+/// ```
+/// #test assignments
+///
+/// #section input
+/// local a = 1
+///
+/// #section expected
+/// 
+/// ```
+pub fn test_cst(args: TestCst) {
+    
 }

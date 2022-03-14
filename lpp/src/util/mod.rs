@@ -1,3 +1,3 @@
-mod tree_printer;
+mod tree;
 
-pub use tree_printer::{TreePrinter, TreePrinterOptions};
+pub use tree::{TreePrinter, TreePrinterOptions};

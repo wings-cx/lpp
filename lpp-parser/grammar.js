@@ -116,14 +116,14 @@ module.exports = grammar({
           ["*", PRECEDENCE.MULTI],
           ["/", PRECEDENCE.MULTI],
         ].map(([sym, precedence]) => 
-          prec.left(precedence, seq($._expression, sym, $._expression))
+          prec.left(precedence, seq(field("left", $._expression), sym, field("right", $._expression)))
         ),
 
         ...[
           ["..", PRECEDENCE.CONCAT],
           ["^", PRECEDENCE.POWER],
         ].map(([sym, precedence]) => 
-          prec.right(precedence, seq($._expression, sym, $._expression)),
+          prec.right(precedence, seq(field("left", $._expression), sym, field("right", $._expression)))
         ),
       ),
 
